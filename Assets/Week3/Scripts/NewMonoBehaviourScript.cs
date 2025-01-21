@@ -1,6 +1,6 @@
 using UnityEngine;
 
-namespace Week3.Scripts
+namespace Week3Scripts
 {
     public class NewMonoBehaviourScript : MonoBehaviour
     {[Header("Movement")]

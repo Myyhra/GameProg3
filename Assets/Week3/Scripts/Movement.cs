@@ -1,6 +1,7 @@
+using Unity.VisualScripting;
 using UnityEngine;
 
-namespace Week3.Scripts
+namespace Week3Scripts
 {
     [RequireComponent(typeof(InputHandling))]
     [RequireComponent(typeof(CharacterController))]
@@ -21,10 +22,15 @@ namespace Week3.Scripts
      private float initialYPosition;
      
      private InputHandling inputHandling;
-        void Start()
+        private void Awake()
         {
             inputHandling = GetComponent<InputHandling>();
             charControl = GetComponent<CharacterController>();
+            
+        }
+        void Start()
+        {
+            initialYPosition = transform.position.y;
         }
         void Update()
         {

@@ -1,19 +1,37 @@
 using UnityEngine;
 
-namespace Week3.Scripts
+namespace Week3Scripts
 {
+    [RequireComponent(typeof(AudioHandling))]
+    [RequireComponent(typeof(Particle))]
     public class OnCollisionHandling : MonoBehaviour
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        [Header("Collision")]
+        [SerializeField] LayerMask wall;
+        private AudioHandling audio;
+        private Particle explosionParticles;
+        private void Awake()
+        {
+            audio = GetComponent<AudioHandling>();
+            explosionParticles = GetComponent<Particle>();
+        }
         void Start()
         {
         
         }
 
-        // Update is called once per frame
         void Update()
         {
         
+        }
+        private void OnControllerColliderHit(ControllerColliderHit hit)
+        {
+            if ((wall.value & (1 << hit.gameObject.layer)) > 0)
+            {
+                audio.PlayAudio();
+                explosionParticles.PlayParticleEffect();
+
+            }
         }
     }
 }

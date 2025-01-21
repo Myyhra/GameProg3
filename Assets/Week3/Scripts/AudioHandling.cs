@@ -1,19 +1,32 @@
 using UnityEngine;
+using UnityEngine.Audio;
 
-namespace Week3.Scripts
+namespace Week3Scripts
 {
+    [RequireComponent(typeof(AudioSource))]
+    [RequireComponent (typeof(OnCollisionHandling))]
     public class AudioHandling : MonoBehaviour
     {
-        // Start is called once before the first execution of Update after the MonoBehaviour is created
+        [Header("Audio")]
+        [SerializeField] private AudioClip audioClip;
+        [SerializeField] private AudioSource audioSource;
+
         void Start()
         {
-        
+            audioSource = GetComponent<AudioSource>();
+            audioSource.clip = audioClip;
         }
 
-        // Update is called once per frame
+       
         void Update()
         {
         
         }
+        public void PlayAudio()
+        {
+            audioSource.Play();
+            Debug.Log("Play Audio");
+        }
+        
     }
 }

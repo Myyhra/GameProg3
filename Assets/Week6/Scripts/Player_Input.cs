@@ -36,13 +36,10 @@ namespace Week6
             _interactAction = InputSystem.actions.FindAction("Interact");
             
         }
-
         void Start()
         {
 
         }
-
-
         void Update()
         {
             characterInput = new CharacterInput()
@@ -50,14 +47,18 @@ namespace Week6
                 move = _moveAction.ReadValue<Vector2>(),
                 interacting = _interactAction.IsPressed()
             };
-            playerMovement.Movement(characterInput);
-
             cameraInput = new cameraInput()
             {
                 look = _lookAction.ReadValue<Vector2>(),
             };
-            playerCamera.Interact(characterInput.interacting);
+
+
+            //already being called in the script
+            // playerMovement.Movement(characterInput);
+            // playerCamera.Interact(characterInput.interacting);
             
+
+            //Also would be nice to use interfaces for inputs instead of this direct
             
         }
     }

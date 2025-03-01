@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Week6
 {
-    public class Player_Camera : Player_Input
+    public class Player_Camera : MonoBehaviour
     {
         [SerializeField] private Player_Input playerInput;
         [SerializeField] private Camera cam;
@@ -28,7 +28,7 @@ namespace Week6
 
         void Update()
         {
-            
+            Interact(playerInput.characterInput.interacting);
         }
         // ReSharper disable Unity.PerformanceAnalysis
         public void Interact(bool interact)

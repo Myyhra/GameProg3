@@ -1,0 +1,11 @@
+Recreate the following scene send me the video and comment the repo:
+You can do any coding techniques you want as long as it works.
+You don't need to copy the video 1:1
+Mechanics:
+1. We can apply force to bring an object or props closer to ourselves.
+2. Once we have it in our grasp, we can let go to hurl it at the oncoming enemy.
+
+
+Current Tasks:
+-Make pretty much the gravity gun xd
+-Fix Air movement Physics (Still moving in the direction after jumping) ✔

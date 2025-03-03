@@ -21,4 +21,9 @@ namespace Week9
         public void Attack();
         public void AlternateAttack();
     }
+
+    public interface IRayTest
+    {
+        public void RayTest(RaycastHit hit);
+    }
 }

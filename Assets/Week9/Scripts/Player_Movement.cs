@@ -57,6 +57,10 @@ namespace Week9
         
         // public void UpdateInput()
         //So apparently interface methods are being called every frame
+        private void CameraRightMovement()
+        {
+            
+        }
         public void Move(Vector2 direction)
         {
             

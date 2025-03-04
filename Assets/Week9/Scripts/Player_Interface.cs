@@ -10,6 +10,16 @@ namespace Week9
         public void Jump(bool jump);
     }
 
+    public interface IMouseMovable
+    {
+        public Vector2 UpdateCamera(Vector2 mouseDelta);
+    }
+
+    public interface ICameraDirection
+    {
+        Vector3 GetForwardDirection();
+    }
+
     public interface IInteractable
     {
         public void Interact();

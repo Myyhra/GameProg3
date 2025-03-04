@@ -4,22 +4,23 @@ using UnityEngine;
 
 namespace Week9
 {
-    public class Player_CameraMovement : MonoBehaviour
+    public class Player_CameraMovement : MonoBehaviour, IMouseMovable, ICameraDirection
     {
         [SerializeField] private Player_Input playerInput;
         public float sensitivity = 0.1f;
         private Vector3 _eulerAngles;
+        // private IMouseMovable _mouseMovable;
+        
 
-        public void Update()
+        public virtual Vector2 UpdateCamera(Vector2 mouseDelta)
         {
-            UpdateRotation(playerInput);
+            _eulerAngles += new Vector3(-mouseDelta.y,mouseDelta.x) * sensitivity;
+            return transform.eulerAngles = _eulerAngles;
         }
-        public void UpdateRotation(Player_Input input)
+
+        public Vector3 GetForwardDirection()
         {
-            //use if want the method the occur from the player_input script
-            // _eulerAngles += new Vector2(-input.look.y,input.look.x ) * sensitivity;
-            _eulerAngles += new Vector3(-input.cameraInput.look.y,input.cameraInput.look.x ) * sensitivity;
-            transform.eulerAngles = _eulerAngles;
+            return transform.forward;
         }
     }
 }

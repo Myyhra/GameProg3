@@ -1,15 +1,27 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Week9
 {
     
     public class Player_GravityGun_Attack : MonoBehaviour, IAttackable, IRayTest
     {
-        [SerializeField]private GameObject holdObject;
-        public Transform holdObjectTransform;
-        void Awake()
-        {
+        [SerializeField]private Transform holdObject;
+        
+        [SerializeField]float throwForce, lerpspeed;
+        
+        [SerializeField]private Rigidbody detectedRB;
+        [FormerlySerializedAs("objectRb")] [SerializeField] private Rigidbody objectRB;
+        private ICameraDirection cameraDirection;
 
+        private bool isHolding;
+        private bool canHold = true;
+     
+        public void SetCameraDirection(ICameraDirection cameraDirection)
+        {
+            this.cameraDirection = cameraDirection;
         }
 
         void Start()
@@ -20,34 +32,71 @@ namespace Week9
 
         void Update()
         {
-
+            if (isHolding && objectRB)
+            {
+                objectRB.MovePosition(Vector3.Lerp(objectRB.position, holdObject.transform.position, lerpspeed * Time.deltaTime));//When holding
+            }
         }
 
         public void Attack()
         {
-            if (holdObject != null)
+            //When holding
+            if (objectRB)
             {
-                /*Rigidbody rb = holdObject.GetComponent<Rigidbody>();
-                holdObject.transform.SetParent(null);
-                if (rb != null)
+                objectRB.isKinematic = false;
+                if (cameraDirection != null)
                 {
-                    rb.isKinematic = false;
-                    rb.AddForce(transform.forward * 10f, ForceMode.Impulse); // Example throw force
-                }*/
+                    Vector3 forward = cameraDirection.GetForwardDirection();
+                    isHolding = false;
+                    objectRB.AddForce(forward * throwForce, ForceMode.VelocityChange);
+                }
+                else
+                {
+                    Debug.LogWarning("cameraDirection is not set; Using default direction");
+                    // objectRb.AddForce(transform.forward * throwForce, ForceMode.VelocityChange);
+                }
+                objectRB = null;
+                Invoke(nameof(StopHolding),0.5f);
                 Debug.Log("Throw Object: " + holdObject.name);
-                holdObject = null;
             }
             else
             {
                 Debug.Log("No object is being held.");
             }
+            
+            //When just want to push
+            if (detectedRB && !isHolding)
+            {
+                detectedRB.isKinematic = false;
+                if (cameraDirection != null)
+                {
+                    Vector3 forward = cameraDirection.GetForwardDirection();
+                    isHolding = false;
+                    detectedRB.AddForce(forward * throwForce, ForceMode.VelocityChange);
+                }
+                else
+                {
+                    Debug.LogWarning("cameraDirection is not set; Using default direction");
+                    // DetectedRb.AddForce(transform.forward * throwForce, ForceMode.VelocityChange);
+                }
+                detectedRB = null;
+                Invoke(nameof(StopHolding),0.5f);
+                Debug.Log("Pushing Object: " + holdObject.name);
+            }
+            else
+            {
+                Debug.Log("No object To Push.");
+            }
         }
 
         public void AlternateAttack()
         {
-            // GameObject mightHoldingObject = holdObject;
-            if (holdObject != null)
+            if (detectedRB)
             {
+                objectRB = detectedRB;
+                objectRB.isKinematic = true;
+                isHolding = true;
+                canHold = false;
                 Debug.Log("Holding " + holdObject.name + " Object");
             }
             else
@@ -55,20 +104,40 @@ namespace Week9
                 Debug.Log("No object is being held.");
             }
             
-            /*holdObject.transform.SetParent(holdObjectTransform);
-            holdObject.transform.localPosition = Vector3.zero;          //REFER TO THE GRAVITY GUN TUTORIAL IN YOUTUBE
-            Rigidbody Orb = holdObject.GetComponent<Rigidbody>();
-            Orb.isKinematic = true;
-            Orb.useGravity = false;*/
         }
 
         public void RayTest(RaycastHit hit)
         {
-            if (hit.collider.gameObject.CompareTag("Gravitable"))
+            /*if (hit.collider.CompareTag("Gravitable")&& canHold )
             {
-                holdObject = hit.collider.gameObject;
+                // StartCoroutine(WaitForHolding());
+                grabbedRb = hit.collider.gameObject.GetComponent<Rigidbody>();
                 Debug.Log("Gravitate " + hit.collider.gameObject.name);
+            }*/
+
+            if (hit.collider == null || !hit.collider.gameObject.CompareTag("Gravitable") || !canHold)
+            {
+                detectedRB = null;
+                return;
             }
+            detectedRB = hit.collider.gameObject.GetComponent<Rigidbody>();
+            Debug.Log("Gravitate " + hit.collider.gameObject.name);
+
+
         }
+
+        void StopHolding()
+        {
+            // yield return new WaitForSeconds(0.5f);
+            canHold = true;
+        }
+
+        IEnumerator WaitForHolding()
+        {
+            yield return new WaitUntil(() => detectedRB == null);
+        }
+        
+
+
     }
 }

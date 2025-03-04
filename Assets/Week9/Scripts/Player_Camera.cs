@@ -5,12 +5,12 @@ using UnityEngine;
 
 namespace Week9
 {
-    public class Player_Camera : MonoBehaviour
+    public class Player_Camera : MonoBehaviour, ICameraDirection
     {
         // [SerializeField] private Player_Input playerInput;
         private Camera cam;
         [Header("Interact Ray Settings")]
-        [SerializeField] private float rayDist = 10f;
+        [Range(0f,10f)][SerializeField] private float rayDist = 10f;
         [SerializeField] private LayerMask gravitableMask;
 
         public Player_GravityGun_Attack gravityGun;
@@ -32,6 +32,7 @@ namespace Week9
                 {
                     Debug.LogError("gravityGun does not have an IRayTest component.");
                 }
+                gravityGun.SetCameraDirection(this);
             }
             else
             {
@@ -46,7 +47,7 @@ namespace Week9
         }
         void Update()
         {
-            if(gravityGun.isActiveAndEnabled)  //Better off in making another script with weapon switching next time
+            // if(gravityGun.isActiveAndEnabled)  //Better off in making another script with weapon switching next time
             Raycasting();
         }
 
@@ -56,18 +57,32 @@ namespace Week9
             #if  UNITY_EDITOR
             Debug.DrawRay(ray.origin, ray.direction * rayDist, Color.red);
             #endif
-            if (!Physics.Raycast(ray, out var hit, rayDist, gravitableMask)) return;
-            // interactHit = hit;
-            if (IrayTest != null)
+            if (Physics.Raycast(ray, out var hit, rayDist, gravitableMask))
             {
-                IrayTest.RayTest(hit);
+                // interactHit = hit;
+                if (IrayTest != null)
+                {
+                    IrayTest.RayTest(hit);
+                }
+                else
+                {
+                    Debug.LogWarning("IRayTest is not assigned.");
+                }
+                
             }
             else
             {
-                Debug.LogWarning("IRayTest is not assigned.");
+                IrayTest?.RayTest(new RaycastHit());
             }
+                
+            
+            
 
         }
-        
+
+        public Vector3 GetForwardDirection()
+        {
+            return cam.transform.forward;
+        }
     }
 }

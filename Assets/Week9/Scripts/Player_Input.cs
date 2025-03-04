@@ -24,7 +24,7 @@ namespace Week9
         
         [Header("Player Scripts")]
         /*[SerializeField]*/ Player_Movement _playerMovement;
-        /*[SerializeField]*/ Player_CameraMovement _playerCameraMovement;
+        [SerializeField] Player_CameraMovement _playerCameraMovement;
         /*[SerializeField]*/ Player_Camera _playerCamera;
         
         //ActionField
@@ -46,6 +46,7 @@ namespace Week9
         //Interfaces
         private IPlayerMoveable _IPlayerMoveable;
         private IAttackable _IAttackable;
+        private IMouseMovable _IMouseMovable; // For Player_CameraMovement
         
         void Awake()
         {
@@ -60,6 +61,12 @@ namespace Week9
             
             _IPlayerMoveable = GetComponent<IPlayerMoveable>();
             _IAttackable = GetComponent<IAttackable>();
+            _IMouseMovable = _playerCameraMovement.GetComponent<IMouseMovable>();
+
+            /*if (_IAttackable is Player_GravityGun_Attack gravityGun)
+            {
+                gravityGun.SetCameraDirection(_playerCameraMovement);
+            }*/
 
 
         }
@@ -93,6 +100,7 @@ namespace Week9
             // _IPlayerMoveable.Backwards(-characterInput.move.y); //Apparently with a float parameter on the interface, you can just do this xd
             _IPlayerMoveable.Move(characterInput.move);
             _IPlayerMoveable.Jump(characterInput.jump);
+            _IMouseMovable.UpdateCamera(cameraInput.look);
             MouseClicks();
             
             

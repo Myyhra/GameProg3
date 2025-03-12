@@ -32,7 +32,16 @@ namespace Week9
 
         void Update()
         {
-            
+            Gravity();
+            ControllerMove();
+           
+            isGrounded = controller.isGrounded;
+        }
+        
+       
+        //Making movement direction based on camera view
+        private Vector3 CameraDirectionBasedMovement()
+        {
             Vector3 camForward = cameraTransform.forward;
             Vector3 camRight = cameraTransform.right;
             camForward.y = 0;
@@ -40,38 +49,25 @@ namespace Week9
             camForward = camForward.normalized;
             camRight = camRight.normalized;
             
-            Vector3 move = camRight * currentInputDirection.x + camForward * currentInputDirection.y;
-            Vector3 horizontalVelocity = move * speed;
-            
-            
-            
-            Gravity();
-            
-            Vector3 totalVelocity = horizontalVelocity + new Vector3(0, velocity.y, 0);
-            controller.Move(totalVelocity * Time.deltaTime);
-          
-           
-            isGrounded = controller.isGrounded;
+            return camRight * currentInputDirection.x + camForward * currentInputDirection.y;
         }
         
-        
-        // public void UpdateInput()
-        //So apparently interface methods are being called every frame
-        private void CameraRightMovement()
-        {
-            
-        }
+        //Move Input Detect
         public void Move(Vector2 direction)
         {
-            
             currentInputDirection = direction;
-            
-            
             //Debug Logs
             if (direction.y > 0) Debug.Log("Player movement script is receiving interface calls & Going Forward");
             if (direction.y < 0) Debug.Log("Player movement script is receiving interface calls & Going Back");
             if (direction.x > 0) Debug.Log("Player movement script is receiving interface calls & Going Right");
             if (direction.x < 0) Debug.Log("Player movement script is receiving interface calls & Going Left");
+        }
+        //Character Controller Move
+        public void ControllerMove()
+        {
+            Vector3 horizontalVelocity = CameraDirectionBasedMovement() * speed;
+            Vector3 totalVelocity = horizontalVelocity + new Vector3(0, velocity.y, 0);
+            controller.Move(totalVelocity * Time.deltaTime);
         }
         
         //Might put in a separate script

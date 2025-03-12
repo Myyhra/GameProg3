@@ -30,7 +30,7 @@ namespace Week9
         }
 
 
-        void Update()
+        void FixedUpdate()
         {
             if (isHolding && objectRB)
             {
@@ -91,10 +91,12 @@ namespace Week9
 
         public void AlternateAttack()
         {
+
+            //Object Holding
             if (detectedRB)
-            {
-                objectRB = detectedRB;
-                objectRB.isKinematic = true;
+            {                           
+                objectRB = detectedRB;  
+                objectRB.isKinematic = true;        
                 isHolding = true;
                 canHold = false;
                 Debug.Log("Holding " + holdObject.name + " Object");
@@ -103,6 +105,16 @@ namespace Week9
             {
                 Debug.Log("No object is being held.");
             }
+
+
+            /* //Object Let go
+            if(objectRB && isHolding)
+            {
+                objectRB = null;
+                objectRB.isKinematic = false;
+                isHolding = false;
+                canHold = true;
+            } */
             
         }
 
@@ -115,6 +127,8 @@ namespace Week9
                 Debug.Log("Gravitate " + hit.collider.gameObject.name);
             }*/
 
+
+            //Object Detector
             if (hit.collider == null || !hit.collider.gameObject.CompareTag("Gravitable") || !canHold)
             {
                 detectedRB = null;
@@ -132,10 +146,10 @@ namespace Week9
             canHold = true;
         }
 
-        IEnumerator WaitForHolding()
+        /* IEnumerator WaitForHolding()
         {
             yield return new WaitUntil(() => detectedRB == null);
-        }
+        } */
         
 
 

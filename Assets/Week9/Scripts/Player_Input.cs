@@ -100,13 +100,10 @@ namespace Week9
             // _IPlayerMoveable.Backwards(-characterInput.move.y); //Apparently with a float parameter on the interface, you can just do this xd
             _IPlayerMoveable.Move(characterInput.move);
             _IPlayerMoveable.Jump(characterInput.jump);
-            _IMouseMovable.UpdateCamera(cameraInput.look);
+            _IMouseMovable.UpdateCamera(cameraInput.look); //Camera Rotation
             MouseClicks();
             
             
-            //already being called in the script
-            // playerMovement.Movement(characterInput);
-            // playerCamera.Interact(characterInput.interacting);
 
 
             //Also would be nice to use interfaces for inputs instead of this direct

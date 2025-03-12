@@ -37,8 +37,18 @@ namespace Week9
            
             isGrounded = controller.isGrounded;
         }
-        
-       
+
+        #region GroundMovement
+        //Detect move input
+        public void Move(Vector2 direction)
+        {
+            currentInputDirection = direction;
+            //Debug Logs
+            if (direction.y > 0) Debug.Log("Player movement script is receiving interface calls & Going Forward");
+            if (direction.y < 0) Debug.Log("Player movement script is receiving interface calls & Going Back");
+            if (direction.x > 0) Debug.Log("Player movement script is receiving interface calls & Going Right");
+            if (direction.x < 0) Debug.Log("Player movement script is receiving interface calls & Going Left");
+        }
         //Making movement direction based on camera view
         private Vector3 CameraDirectionBasedMovement()
         {
@@ -51,17 +61,6 @@ namespace Week9
             
             return camRight * currentInputDirection.x + camForward * currentInputDirection.y;
         }
-        
-        //Move Input Detect
-        public void Move(Vector2 direction)
-        {
-            currentInputDirection = direction;
-            //Debug Logs
-            if (direction.y > 0) Debug.Log("Player movement script is receiving interface calls & Going Forward");
-            if (direction.y < 0) Debug.Log("Player movement script is receiving interface calls & Going Back");
-            if (direction.x > 0) Debug.Log("Player movement script is receiving interface calls & Going Right");
-            if (direction.x < 0) Debug.Log("Player movement script is receiving interface calls & Going Left");
-        }
         //Character Controller Move
         public void ControllerMove()
         {
@@ -69,6 +68,9 @@ namespace Week9
             Vector3 totalVelocity = horizontalVelocity + new Vector3(0, velocity.y, 0);
             controller.Move(totalVelocity * Time.deltaTime);
         }
+        #endregion
+        
+        
         
         //Might put in a separate script
         public void Jump(bool jump)

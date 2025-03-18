@@ -9,13 +9,14 @@ namespace StateMachinePractice
         private NavMeshAgent agent;
         public Transform pointA, pointB,playerPosition;
         public Transform currentTarget;
-
+        public float attackRadius = 2f;
         public float chaseRadius;
         public bool isChasing = false;
+        public float distanceToPlayer;
         private void Awake()
         {
             agent = GetComponent<NavMeshAgent>();
-            StartPatrol();
+            //StartPatrol();
         }
         void Start()
         {
@@ -24,38 +25,42 @@ namespace StateMachinePractice
 
         void Update()
         {
-            float distanceToPlayer = Vector3.Distance(transform.position, playerPosition.position);
-            if(distanceToPlayer < chaseRadius)
-            {
-                agent.speed = 5f;
-                isChasing = true;
-                currentTarget = playerPosition;
-                agent.SetDestination(playerPosition.position);
+            distanceToPlayer = Vector3.Distance(transform.position, playerPosition.position);
+          //  if(distanceToPlayer <= chaseRadius)
+        //    {
+      //          agent.speed = 5f;
+    //            isChasing = true;
+  //              currentTarget = playerPosition;
+//                agent.SetDestination(playerPosition.position);
 
-            }
+            //}
 
-            else if(!agent.pathPending && agent.remainingDistance < agent.stoppingDistance)
-            {
-                currentTarget = (currentTarget == pointA) ? pointB : pointA;
-                agent.SetDestination(currentTarget.position);
-            }
+            //else if(!agent.pathPending && agent.remainingDistance < agent.stoppingDistance)
+            //{
+           //     currentTarget = (currentTarget == pointA) ? pointB : pointA;
+         //       agent.SetDestination(currentTarget.position);
+         }
 
 
-            
-        }
 
-        public async void StartPatrol()
-        {
-            await Task.Delay(5000);
-            agent.speed = 3.5f;
-            currentTarget = pointA;
-            agent.SetDestination(currentTarget.position);
-        }
+        // }
+
+        //public async void StartPatrol()
+        // {
+        //     await Task.Delay(5000);
+        //     agent.speed = 3.5f;
+        //    currentTarget = pointA;
+        //    agent.SetDestination(currentTarget.position);
+        //}
 
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.red;
-            Gizmos.DrawWireSphere(transform.position,chaseRadius);
+            Gizmos.DrawWireSphere(transform.position, chaseRadius);
+            Gizmos.color = Color.green;
+            Gizmos.DrawWireSphere(transform.position, attackRadius);
+
+
         }
     }
 }

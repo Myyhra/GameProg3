@@ -920,8 +920,10 @@ MonoBehaviour:
   pointB: {fileID: 2069066438}
   playerPosition: {fileID: 1739758221}
   currentTarget: {fileID: 0}
+  attackRadius: 2
   chaseRadius: 5
   isChasing: 0
+  distanceToPlayer: 0
 --- !u!195 &2109699177
 NavMeshAgent:
   m_ObjectHideFlags: 0

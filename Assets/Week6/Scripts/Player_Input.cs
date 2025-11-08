@@ -18,10 +18,10 @@ namespace Week6
         private InputAction _lookAction;
         private InputAction _interactAction;
         
-        [Header("Player Scripts")]
+        /* [Header("Player Scripts")]
         [SerializeField] Player_Movement playerMovement;
         [SerializeField] Player_CameraMovement playerCameraMovement;
-        [SerializeField] Player_Camera playerCamera;
+        [SerializeField] Player_Camera playerCamera; */
         
         
         public CharacterInput characterInput { get; private set; }
